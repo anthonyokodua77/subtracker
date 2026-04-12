@@ -1,5 +1,3 @@
-// Utility functions for browser push notifications
-
 export function isPushSupported(): boolean {
   return typeof window !== 'undefined' &&
     'serviceWorker' in navigator &&
@@ -41,7 +39,6 @@ export async function subscribeToPush(
   try {
     const existing = await registration.pushManager.getSubscription()
     if (existing) return existing
-
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
@@ -55,9 +52,7 @@ export async function subscribeToPush(
 
 export function scheduleLocalReminder(name: string, amount: number, daysUntil: number) {
   if (Notification.permission !== 'granted') return
-
   const delay = Math.max(0, (daysUntil - 2) * 24 * 60 * 60 * 1000)
-
   setTimeout(() => {
     new Notification(`Upcoming charge: ${name}`, {
       body: `${name} will charge you $${amount.toFixed(2)} in 2 days`,
